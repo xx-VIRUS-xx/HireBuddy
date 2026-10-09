@@ -24,6 +24,9 @@ async function openLinkedIn() {
     : 'Persisted LinkedIn session opened.';
 }
 
+const HOST = '127.0.0.1';
+const PORT = Number(process.env.PORT) || 8000;
+const PUBLIC_FILES = new Set(['/index.html', '/app.js', '/styles.css']);
 const mime = { '.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'text/javascript', '.md':'text/plain' };
 const server = http.createServer(async (req, res) => {
   try {
@@ -32,9 +35,9 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({ message }));
     }
-    const requested = req.url === '/' ? '/index.html' : req.url;
-    const file = path.resolve(root, `.${requested}`);
-    if (!file.startsWith(root) || file.startsWith(profileDir)) return res.writeHead(404).end('Not found');
+    const requested = req.url === '/' ? '/index.html' : req.url.split('?')[0];
+    if (!PUBLIC_FILES.has(requested)) return res.writeHead(404).end('Not found');
+    const file = path.join(root, requested);
     const body = await fs.readFile(file);
     res.writeHead(200, { 'Content-Type': mime[path.extname(file)] || 'application/octet-stream' });
     res.end(body);
@@ -45,5 +48,5 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(8000, () => console.log('HireBuddy running at http://localhost:8000'));
+server.listen(PORT, HOST, () => console.log(`HireBuddy running at http://${HOST}:${PORT}`));
 process.on('SIGINT', async () => { if (context) await context.close(); server.close(); });

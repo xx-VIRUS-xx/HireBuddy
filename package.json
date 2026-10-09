@@ -2,6 +2,6 @@
   "name": "hirebuddy",
   "private": true,
   "type": "module",
-  "scripts": { "dev": "node server.js", "install-browser": "playwright install chromium" },
+  "scripts": { "dev": "node server.js", "install-browser": "playwright install chromium", "test": "node --test tests/*.test.mjs" },
   "dependencies": { "playwright": "^1.52.0" }
 }
