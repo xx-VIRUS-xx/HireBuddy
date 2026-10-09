@@ -1,0 +1,27 @@
+# Logged-in LinkedIn browser session (cookies): never commit
+.linkedin-chromium-profile/
+
+# Personal documents and drafts: kept local
+*.pdf
+outreach/
+
+# Generated job data (third-party postings)
+ingestion/openings.csv
+ingestion/openings.json
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies and caches
+node_modules/
+ingestion/.venv/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# OS
+.DS_Store
