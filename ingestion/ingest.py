@@ -6,10 +6,6 @@ Sources:
   - Greenhouse public API   (no auth)
   - Lever public API        (no auth)
   - Ashby public API        (no auth)
-  - LinkedIn public job search pages (no auth, no login) — best-effort, HTML
-    scraping of publicly served search results only. LinkedIn rate-limits and
-    sometimes blocks scripted requests to these pages; treat failures here as
-    expected and fall back to checking https://linkedin.com/jobs manually.
 
 This script never logs into any site, stores no credentials, and does not
 send any messages. It only reads public job listing data.
@@ -18,10 +14,8 @@ import csv
 import html
 import json
 import re
-import sys
 import time
 from pathlib import Path
-from urllib.parse import quote_plus
 
 import requests
 import yaml
@@ -107,46 +101,6 @@ def fetch_ashby(slug: str) -> list[dict]:
     return out
 
 
-def fetch_linkedin_public(keywords: str, location: str = "India", max_results: int = 25) -> list[dict]:
-    """
-    Best-effort read of LinkedIn's public job search results page (no login,
-    no auth cookie). LinkedIn frequently rate-limits/blocks non-browser
-    requests to this endpoint — a failure or empty result here is expected
-    and not a bug. Use https://linkedin.com/jobs manually as the reliable
-    fallback; this is a bonus source, not the primary one.
-    """
-    url = (
-        "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search"
-        f"?keywords={quote_plus(keywords)}&location={quote_plus(location)}"
-        f"&f_WT=2&start=0"  # f_WT=2 = remote
-    )
-    try:
-        r = requests.get(url, headers={**HEADERS, "Accept": "text/html"}, timeout=TIMEOUT)
-        if r.status_code != 200:
-            print(f"  [linkedin] blocked or unavailable (status {r.status_code}) — skipping, check manually", file=sys.stderr)
-            return []
-    except requests.RequestException as e:
-        print(f"  [linkedin] request failed ({e}) — skipping, check manually", file=sys.stderr)
-        return []
-
-    titles = re.findall(r'class="base-search-card__title">\s*([^<]+)', r.text)
-    companies = re.findall(r'class="base-search-card__subtitle">\s*<a[^>]*>([^<]+)', r.text)
-    locations = re.findall(r'class="job-search-card__location">\s*([^<]+)', r.text)
-    links = re.findall(r'<a class="base-card__full-link" href="([^"?]+)', r.text)
-
-    out = []
-    for i in range(min(len(titles), max_results)):
-        out.append({
-            "source": "linkedin",
-            "company": companies[i].strip() if i < len(companies) else "",
-            "title": titles[i].strip(),
-            "location": locations[i].strip() if i < len(locations) else "",
-            "url": links[i] if i < len(links) else "",
-            "description": "",  # full JD requires an extra fetch per posting; kept out to stay lightweight
-        })
-    return out
-
-
 def main():
     companies = yaml.safe_load(COMPANIES_FILE.read_text())
     all_jobs: list[dict] = []
@@ -166,10 +120,6 @@ def main():
         all_jobs.extend(fetch_ashby(slug))
         time.sleep(0.3)
 
-    for query in ["backend engineer", "AI infrastructure engineer", "search engineer"]:
-        print(f"Fetching LinkedIn public search: {query}")
-        all_jobs.extend(fetch_linkedin_public(query))
-        time.sleep(1.0)
 
     scored = []
     for job in all_jobs:
