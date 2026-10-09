@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10172a" />
+    <title>HireBuddy — Find your next right opportunity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand"><span class="brand-mark">✦</span><span>HireBuddy</span></div>
+        <div class="profile-mini">
+          <div class="avatar">PS</div>
+          <div><strong>Prabhat Saxena</strong><span>AI Infrastructure</span></div>
+          <button class="icon-button" aria-label="Profile menu">•••</button>
+        </div>
+        <nav>
+          <a class="active" href="#discover"><span>◈</span> Discover</a>
+          <a href="#pipeline"><span>▣</span> My pipeline <b id="pipeline-count">0</b></a>
+          <a href="#outreach"><span>✉</span> Outreach</a>
+          <a href="#profile"><span>◉</span> My profile</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="tip-card"><span class="sparkle">✦</span><strong>Make your search sharper</strong><p>Add your ideal role and location to get better company matches.</p><button class="text-link" data-scroll="profile">Edit preferences →</button></div>
+          <div class="sidebar-footer"><span>Settings</span><span>Help</span></div>
+        </div>
+      </aside>
+
+      <main class="main" id="discover">
+        <header class="topbar"><div class="mobile-brand"><span class="brand-mark">✦</span> HireBuddy</div><div class="top-actions"><span class="status-dot"></span> Your search is active <button class="avatar small">PS</button></div></header>
+        <section class="hero"><div><p class="eyebrow">YOUR CAREER COMMAND CENTER</p><h1>Find work that fits<br /><em>your next chapter.</em></h1><p class="hero-copy">HireBuddy uses your experience and preferences to find companies worth your time — then helps you start the conversation.</p></div><div class="hero-orbit"><span class="orbit-dot one"></span><span class="orbit-dot two"></span><span class="orbit-dot three"></span><div class="orbit-core">✦</div></div></section>
+
+        <section class="connect-card" id="profile">
+          <div class="linkedin-icon">in</div><div class="connect-copy"><div class="section-label">START HERE</div><h2>Connect your LinkedIn profile</h2><p>Give HireBuddy context about your experience. We’ll use it to find better-fit companies and personalize outreach.</p></div>
+          <div class="connect-form"><label for="linkedin-url">LinkedIn profile URL</label><div class="input-row"><input id="linkedin-url" value="https://www.linkedin.com/in/prabhat-saxena" placeholder="https://linkedin.com/in/your-name" /><button id="save-profile" class="primary">Save profile <span>→</span></button></div><div class="browser-row"><button id="open-linkedin" class="browser-button">Open persisted LinkedIn session ↗</button><span id="browser-status">Not connected</span></div><small id="profile-status">Stored locally in this browser. We never post without your approval.</small></div>
+        </section>
+
+        <section class="preferences"><div class="section-heading"><div><p class="eyebrow">YOUR TARGET</p><h2>What are you looking for?</h2></div><button class="edit-button" id="save-preferences">Save preferences</button></div><div class="preference-grid"><label>Role or keyword<input id="role-input" value="AI Infrastructure Engineer" /></label><label>Where do you want to work?<input id="location-input" value="Remote · India · Europe" /></label><label>Company stage<select id="stage-input"><option>Any stage</option><option>Startup</option><option>Scale-up</option><option>Enterprise</option></select></label><label>Work mode<select id="mode-input"><option>Remote first</option><option>Hybrid</option><option>On-site</option></select></label></div><div class="chips"><span>Python</span><span>LLM infrastructure</span><span>RAG & search</span><span>Kubernetes</span><button id="add-skill">+ Add skill</button></div></section>
+
+        <section class="company-section" id="pipeline"><div class="section-heading"><div><p class="eyebrow">BUILT FOR YOU</p><h2>Companies worth a look</h2><p class="muted">Based on your experience in AI infrastructure, search, and distributed systems.</p></div><button id="refresh" class="filter-button">↻ Refresh matches</button></div><div class="filters"><button class="filter active" data-filter="all">All matches <span>6</span></button><button class="filter" data-filter="remote">Remote <span>4</span></button><button class="filter" data-filter="growth">Fast-growing <span>3</span></button><div class="filter-spacer"></div><button class="sort-button">Best fit ↓</button></div><div id="company-grid" class="company-grid"></div></section>
+
+        <section class="bottom-section" id="outreach"><div class="outreach-card"><div class="card-icon purple">✉</div><div><p class="eyebrow">NEXT STEP</p><h3>Turn a match into a conversation</h3><p>Save a company and HireBuddy will help you find the right person to contact and draft a message that sounds like you.</p><button class="secondary" data-scroll="pipeline">View saved companies →</button></div></div><div class="stats-card"><p class="eyebrow">YOUR MOMENTUM</p><div class="stat-row"><div><strong id="saved-stat">0</strong><span>saved companies</span></div><div><strong>0</strong><span>messages sent</span></div><div><strong>0</strong><span>replies</span></div></div></div></section>
+        <footer>HireBuddy <span>·</span> Your data stays in your browser for this prototype.</footer>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

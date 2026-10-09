@@ -1,0 +1,19 @@
+# Seed list of companies to check for open roles.
+# provider: greenhouse | lever | ashby
+# slug: the company's board identifier used in that provider's public API/URL
+greenhouse:
+  - elastic
+  - liveperson
+  - grafana-labs
+  - hashicorp
+  - datadog
+  - cockroach-labs
+  - temporal
+  - airbyte
+
+lever:
+  - qdrant
+  - weaviate
+
+ashby:
+  - anyscale
